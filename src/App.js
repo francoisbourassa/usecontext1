@@ -1,24 +1,40 @@
-import logo from './logo.svg';
+import React, { useState, useContext, createContext } from 'react';
 import './App.css';
 
-function App() {
+// Création d'un Context pour le thème
+const ThemeContext = createContext();
+
+function ThemeButton() {
+  // Utiliser le contexte ici
+  const theme = useContext(ThemeContext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <button style={{ background: theme.background, color: theme.foreground }}>
+      Je suis un bouton stylisé par le thème !
+    </button>
+  );
+}
+
+function App() {
+  // Utilisation du hook useState pour gérer le thème
+  const [theme, setTheme] = useState({
+    foreground: "#ffffff",
+    background: "#222222"
+  });
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      <div className="App">
+        <header className="App-header">
+          <ThemeButton />
+          <button onClick={() => setTheme({
+            foreground: "#000000",
+            background: "#eeeeee"
+          })}>
+            Changer de thème
+          </button>
+        </header>
+      </div>
+    </ThemeContext.Provider>
   );
 }
 
